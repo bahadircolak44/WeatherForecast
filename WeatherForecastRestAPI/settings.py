@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authentication',
-    'django_q'
+    'api'
 ]
 
 MIDDLEWARE = [
@@ -76,13 +76,16 @@ WSGI_APPLICATION = 'WeatherForecastRestAPI.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'weather_db',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
-        'HOST': 'weather_db',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
+CITIES_LIGHT_TRANSLATION_LANGUAGES = ['fr', 'en']
+CITIES_LIGHT_INCLUDE_COUNTRIES = ['FR']
+CITIES_LIGHT_INCLUDE_CITY_TYPES = ['PPL', 'PPLA', 'PPLA2', 'PPLA3', 'PPLA4', 'PPLC', 'PPLF', 'PPLG', 'PPLL', 'PPLR', 'PPLS', 'STLMT',]
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -130,8 +133,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
     ),
 }
-
-Q_CLUSTER = {
-    "name": "shop",
-    "orm": "default",  # Use Django's ORM + database for broker
-}
+WORLD_WEATHER_ONLINE_BASE_URL = "https://api.worldweatheronline.com/premium/v1/weather.ashx"
+WORLD_WEATHER_ONLINE_API_KEY = "e3a24741133f4fda982190231211401"
+WORLD_WEATHER_ONLINE_FORMAT = "json"
