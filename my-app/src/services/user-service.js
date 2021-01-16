@@ -14,6 +14,12 @@ class UserService {
   userDetail() {
     return client.get("auth/me/");
   }
+  cities() {
+    return client.get("cities/");
+  }
+  weather(payload) {
+    return client.post("weather-forecast/", payload);
+  }
 }
 
 export default new UserService();

@@ -9,8 +9,7 @@
       <div class="col">
         <div class="jumbotron jumbotron">
           <div class="container">
-            <h1 class="display-5">Hi {{ userData.username }}!</h1>
-            <p class="lead mt-5">Your system group > {{ userData.email }}</p>
+            <h1 class="display-5">Hi {{ cityData }}!</h1>
           </div>
         </div>
       </div>
@@ -26,13 +25,13 @@ export default {
     Navigation,
   },
   methods: {
-    ...mapActions(["getUserData"]),
+    ...mapActions(["getCityData"]),
   },
   created() {
-    this.getUserData().catch(() => {});
+    this.getCityData().catch(() => {});
   },
   computed: {
-    ...mapGetters(["userData"]),
+    ...mapGetters(["cityData"]),
   },
 };
 </script>

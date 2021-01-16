@@ -17,5 +17,6 @@ RUN npm install vuex
 RUN npm install jquery
 RUN npm install popper.js
 RUN npm install axios
+RUN npm install vue-select
 # start app
 CMD ["npm", "run", "serve"]
