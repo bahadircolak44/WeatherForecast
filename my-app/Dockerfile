@@ -12,5 +12,10 @@ COPY package.json /app/package.json
 RUN npm install
 RUN npm install @vue/cli@3.7.0 -g
 RUN npm install bootstrap
+RUN npm install vue-router
+RUN npm install vuex
+RUN npm install jquery
+RUN npm install popper.js
+RUN npm install axios
 # start app
 CMD ["npm", "run", "serve"]

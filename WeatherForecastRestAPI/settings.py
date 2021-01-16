@@ -13,6 +13,8 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from corsheaders.defaults import default_headers
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -24,7 +26,7 @@ SECRET_KEY = 'g(hg808$_l$!t8*al2%cnyxm#e=m09kd43*4xyn2s(e99*ewr7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -36,10 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authentication',
-    'api'
+    'api',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -48,6 +52,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+CORS_ORIGIN_ALLOW_ALL = True
+
 
 ROOT_URLCONF = 'WeatherForecastRestAPI.urls'
 
@@ -93,7 +99,8 @@ DATABASES = {
 }
 CITIES_LIGHT_TRANSLATION_LANGUAGES = ['fr', 'en']
 CITIES_LIGHT_INCLUDE_COUNTRIES = ['FR']
-CITIES_LIGHT_INCLUDE_CITY_TYPES = ['PPL', 'PPLA', 'PPLA2', 'PPLA3', 'PPLA4', 'PPLC', 'PPLF', 'PPLG', 'PPLL', 'PPLR', 'PPLS', 'STLMT',]
+CITIES_LIGHT_INCLUDE_CITY_TYPES = ['PPL', 'PPLA', 'PPLA2', 'PPLA3', 'PPLA4', 'PPLC', 'PPLF', 'PPLG', 'PPLL', 'PPLR',
+                                   'PPLS', 'STLMT', ]
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
