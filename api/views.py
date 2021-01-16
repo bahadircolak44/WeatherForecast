@@ -1,3 +1,4 @@
+import json
 import traceback
 
 import requests
@@ -6,14 +7,19 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from api.models import WorldCities
 from api.serilaizers import WeatherConditionSerializer
 from authentication.serializers import GenericModelSerializer
 
 
 class WeatherConditionView(APIView):
     """
+    @request http://127.0.0.1:8000/api/weather-forecast/?city=Ankara
 
+    To get weather-forecast of given city
     """
+
+    permission_classes = []
 
     def get(self, *args, **kwargs):
         try:
@@ -24,7 +30,8 @@ class WeatherConditionView(APIView):
                     f"city={serializer.validated_data.get('city')}&format={settings.WORLD_WEATHER_ONLINE_FORMAT}")
                 if not r.status_code == status.HTTP_200_OK:
                     return Response(status=status.HTTP_204_NO_CONTENT)
-
+                content = json.loads(r.content)
+                return Response(content)
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
             print(traceback.format_exc())
@@ -35,12 +42,16 @@ class ListWorldCitiesView(APIView):
     """
 
     """
+    permission_classes = []
 
     def get(self, *args, **kwargs):
         try:
-            serializer = GenericModelSerializer(data=self.request.query_params)
+            serializer = GenericModelSerializer(data=self.request.query_params, model=WorldCities,
+                                                fields=('id', 'city_name'))
             if serializer.is_valid():
-                pass
+                city_list = WorldCities.objects.filter()  # filter has better performance than .all()
+                return Response(GenericModelSerializer(city_list, fields=('id', 'city_name'), many=True).data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except:
+            print(traceback.format_exc())
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)

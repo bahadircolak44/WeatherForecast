@@ -2,7 +2,7 @@ from django.db import models
 
 
 class WorldCities(models.Model):
-    city_name = models.CharField(max_length=64, null=False)
+    city_name = models.CharField(max_length=64, null=True)
 
     class Meta:
         db_table = 'world_cities'
