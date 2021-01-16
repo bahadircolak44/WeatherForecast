@@ -9,14 +9,15 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
 COPY package.json /app/package.json
+RUN npm cache clear --force
 RUN npm install
 RUN npm install @vue/cli@3.7.0 -g
-RUN npm install bootstrap
-RUN npm install vue-router
-RUN npm install vuex
-RUN npm install jquery
-RUN npm install popper.js
-RUN npm install axios
-RUN npm install vue-select
+RUN npm install bootstrap bootstrap-vue vue-select vuetify
+RUN npm install vue-router vuex jquery axios popper.js
+RUN npm install sass-loader -D
+RUN npm install node-sass -D
+RUN npm -g i sass
+RUN npm install -D pug-plain-loader pug
+RUN npm install stylus stylus-loader@3
 # start app
 CMD ["npm", "run", "serve"]

@@ -10,6 +10,6 @@ export class CityList extends BaseClass {
 export class City {
   constructor (data = {}) {
     this.id = data.id || null
-    this.city_name = data.name || null
+    this.city_name = data.city_name || null
   }
 }

@@ -2,11 +2,12 @@ import Vue from "vue";
 import App from "./App.vue";
 import store from "./store";
 import router from "./router";
-import vSelect from "vue-select";
+import vSelect from 'vue-select'
+Vue.component('v-select', vSelect)
+import 'vue-select/dist/vue-select.css';
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import 'vue-select/dist/vue-select.css';
-Vue.component("v-select", vSelect);
+
 Vue.config.productionTip = false;
 
 new Vue({

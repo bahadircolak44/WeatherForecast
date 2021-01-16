@@ -22,12 +22,16 @@ function initialCity () {
 export default new Vuex.Store({
   state: {
     user: initialUser(),
-    city: initialCity()
+    city: initialCity(),
+    isTabFlagCurrent: null,
+    locationSearch: null,
+    weatherCache: null,
   },
   getters: {
     isLoggedIn: (state) => state.user.loggedIn,
-    userData: (state) => state.user,
     cityData: (state) => state.city.city_list,
+    getWeatherCache: (state) => state.weatherCache,
+    getTabFlag: (state) => state.isTabFlagCurrent,
   },
   mutations: {
     loginSuccessful(state, token) {
@@ -36,10 +40,11 @@ export default new Vuex.Store({
       localStorage.setItem("accessToken", token);
     },
     logout(state) {
-      console.log(state)
-    },
-    weather(state) {
       (state.user.loggedIn = false), localStorage.removeItem("accessToken");
+    },
+    weather(state, data) {
+      console.log(data)
+      state.weatherCache = data
     },
     city(state, city_list){
       for (let i = 0; i < city_list.length; i++) {
@@ -87,7 +92,6 @@ export default new Vuex.Store({
       return userService
         .cities()
         .then((res) => {
-          console.log(res.data)
           context.commit("city", res.data);
           return Promise.resolve(res.data);
         })
@@ -110,7 +114,7 @@ export default new Vuex.Store({
       return userService
         .weather(payload)
         .then((res) => {
-          context.commit("weather");
+          context.commit("weather", res.data.data);
           return Promise.resolve(res.data);
         })
         .catch((err) => {

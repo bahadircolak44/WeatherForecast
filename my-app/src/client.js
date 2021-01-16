@@ -12,7 +12,6 @@ const client = axios.create({
 client.interceptors.request.use(
   (config) => {
     let token = localStorage.getItem("accessToken") || "";
-    console.log("TOOKEN: ", token);
     config.headers["Authorization"] = `JWT ${token}`;
     return config;
   },

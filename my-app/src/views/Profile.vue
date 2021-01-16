@@ -1,39 +1,166 @@
-<template>
-  <div class="container">
-    <div class="row">
-      <div class="col">
-        <navigation></navigation>
-      </div>
-    </div>
-    <div class="row mt-5">
-      <div class="col">
-        <div class="jumbotron jumbotron">
-          <div class="container">
-            <h1 class="display-5">Hi {{ cityData }}!</h1>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
+<template lang="pug">
+div(style="text-align: center;")
+  h2 Type some animal name to search
 
+  v-autocomplete(:items="items" v-model='item', :get-label='getLabel', :min-len='0' @update-items='update', :component-item='tpl', @item-selected="itemSelected", @item-clicked="itemClicked", :input-attrs="{name: 'input-test', id: 'v-my-autocomplete'}")
+  p Selected item:
+  pre {{ item }}
+
+  hr
+  p.left.note
+    b Note:&nbsp;
+    | The v-autocomplete component does not contain any css. Therefore, you can customize the appearence for any framework by applying style to the generated classes.
+    br
+    b
+      a(href="https://github.com/paliari/v-autocomplete#what-about-appearence", target="_blank") See an example
+</template>
+<!--<select :required="true" @change="getWeatherForecast">-->
+<!--              <option>Choose Province</option>-->
+<!--              <option v-for="c in cityData.list" :value="c.city_name" :key="c.id">-->
+<!--                {{ c.city_name }}-->
+<!--              </option>-->
+<!--            </select>-->
 <script>
-import Navigation from "@/components/Navigation";
-import { mapActions, mapGetters } from "vuex";
+import {mapActions, mapGetters} from "vuex";
+import Autocomplete from './Autocomplete.vue'
+import tpl from './TplItem.vue'
 export default {
+  name: 'Profile',
+  data() {
+    return {
+      index: 1,
+      selected: 'Ankara',
+      itemsApi: [],
+      item: {id: 1, city_name: 'Ankara'},
+      items: [],
+      tpl: tpl
+    }
+  },
   components: {
-    Navigation,
+ 'v-autocomplete': Autocomplete,
   },
   methods: {
     ...mapActions(["getCityData"]),
+
+    getWeatherForecast(event) {
+      console.log(event.target.value)
+      let payload = {city_name: event.target.value};
+      this.$store
+          .dispatch("getWeatherByCityName", payload)
+          .then(() => {
+            this.$router.push({name: "profile"});
+          })
+          .catch((error) => {
+            console.log(error);
+
+            (this.error.status = true),
+                (this.error.message =
+                    error.response.data ||
+                    error.response.error ||
+                    error.response.detail ||
+                    "Unable to login with given credentials.");
+          });
+    },
+    itemSelected (item) {
+      console.log('Selected item!', item)
+      let payload = {city_name: item.city_name};
+      this.$store
+          .dispatch("getWeatherByCityName", payload)
+          .then(() => {
+            this.$router.push({name: "profile"});
+          })
+          .catch((error) => {
+            console.log(error);
+
+            (this.error.status = true),
+                (this.error.message =
+                    error.response.data ||
+                    error.response.error ||
+                    error.response.detail ||
+                    "Unable to login with given credentials.");
+          });
+    },
+    itemClicked (item) {
+      console.log('You clicked an item!', item)
+    },
+    getLabel (item) {
+      if (item) {
+        return item.city_name
+      }
+
+      return ''
+    },
+    update (text) {
+      this.items = this.cityData.list.filter((item) => {
+        return (new RegExp(text.toLowerCase())).test(item.city_name.toLowerCase())
+      })
+    }
   },
   created() {
-    this.getCityData().catch(() => {});
+    this.getCityData().catch(() => {
+    });
+    this.items = this.cityData.list;
+    console.log("this.items: ", this.items)
   },
   computed: {
     ...mapGetters(["cityData"]),
   },
 };
+
 </script>
 
-<style></style>
+<style src="../assets/css/style.css"></style>
+<style lang="stylus">
+.v-autocomplete
+  .v-autocomplete-input-group
+    .v-autocomplete-input
+      font-size 1.5em
+      padding 10px 15px
+      box-shadow none
+      border 1px solid #157977
+      width calc(100% - 32px)
+      outline none
+      background-color #eee
+    &.v-autocomplete-selected
+      .v-autocomplete-input
+        color green
+        background-color #f2fff2
+  .v-autocomplete-list
+    width 100%
+    text-align left
+    border none
+    border-top none
+    max-height 400px
+    overflow-y auto
+    border-bottom 1px solid #157977
+    .v-autocomplete-list-item
+      cursor pointer
+      background-color #fff
+      padding 10px
+      border-bottom 1px solid #157977
+      border-left 1px solid #157977
+      border-right 1px solid #157977
+      &:last-child
+        border-bottom none
+      &:hover
+        background-color #eee
+      abbr
+        opacity 0.8
+        font-size 0.8em
+        display block
+        font-family sans-serif
+
+pre
+  text-align left
+  white-space pre-wrap
+  background-color #eee
+  border 1px solid silver
+  padding 20px !important
+  border-radius 10px
+  font-family monospace !important
+.left
+  text-align left
+.note
+  border-left 5px solid #ccc
+  padding 10px
+</style>
