@@ -27,10 +27,13 @@ class WeatherConditionView(APIView):
             if serializer.is_valid():
                 r = requests.get(
                     f"{settings.WORLD_WEATHER_ONLINE_BASE_URL}/?key={settings.WORLD_WEATHER_ONLINE_API_KEY}&"
-                    f"city={serializer.validated_data.get('city_name')}&format={settings.WORLD_WEATHER_ONLINE_FORMAT}")
+                    f"q={serializer.validated_data.get('city_name')}&format={settings.WORLD_WEATHER_ONLINE_FORMAT}")
                 if not r.status_code == status.HTTP_200_OK:
                     return Response(status=status.HTTP_204_NO_CONTENT)
                 content = json.loads(r.content)
+                print(f"{settings.WORLD_WEATHER_ONLINE_BASE_URL}/?key={settings.WORLD_WEATHER_ONLINE_API_KEY}&"
+                    f"q={serializer.validated_data.get('city_name')}&format={settings.WORLD_WEATHER_ONLINE_FORMAT}")
+                print(content.get('data').get('request')[0].get('query'))
                 return Response(content)
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:

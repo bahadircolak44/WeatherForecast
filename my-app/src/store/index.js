@@ -114,6 +114,7 @@ export default new Vuex.Store({
       return userService
         .weather(payload)
         .then((res) => {
+          console.log(res.data.data)
           context.commit("weather", res.data.data);
           return Promise.resolve(res.data);
         })
