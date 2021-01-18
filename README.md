@@ -4,8 +4,10 @@ You can run it in two ways:
 -    # Docker
     $ docker-compose up
     
- If you want to use docker, you should change database settings in settings.py.
- Use postgresql, command out sqlite.
+ - If you want to use docker, you should change database settings in settings.py.
+    Use postgresql, command out sqlite.
+ - Nginx has been implemented, need to be command out from docker-compose.yaml
+ 
     
 or  
 
