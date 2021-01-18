@@ -3,7 +3,7 @@ import router from "./router";
 import store from "./store";
 
 const client = axios.create({
-  baseURL: process.env.BACKEND_API_URL || "http://localhost:8000/",
+  baseURL: "http://127.0.0.1:8000/",
   headers: {
     "Content-Type": "application/json"
   },
