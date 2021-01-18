@@ -1,58 +1,239 @@
 <template>
   <div id="app" v-bind:style="{ backgroundImage: 'url(' + image + ')' }">
+    <div class="row">
+      <div class="col">
+        <navigation></navigation>
+      </div>
+    </div>
     <main>
-
-      <div class="search-box">
-        <input type="text" class="search-bar" placeholder="Search..." v-model="selected" @keypress="fetchWeather"/>
+      <div>
+        <autocomplete
+            :search="searchCity"
+            placeholder="Search for a country"
+            aria-label="Search for a country"
+            @submit="handleSubmit"
+        ></autocomplete>
       </div>
 
-      <div class="weather-wrap">
-        <div class="location-box">
-          <div class="location">{{ result }}</div>
-          <div class="date" v-if="date">{{ date }}</div>
+      <section v-show="showTable" class="u-align-left u-clearfix u-image u-section-2" id="sec-e348">
+        <div class="u-clearfix u-sheet u-sheet-1">
+          <p class="u-text u-text-1"><span class="u-icon u-icon-1"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xml:space="preserve" class="u-svg-content" viewBox="0 0 512 512" style="width: 1em; height: 1em;"><linearGradient id="New_Gradient_Swatch_34" gradientUnits="userSpaceOnUse" x1="267.775" x2="392.225" y1="238.225" y2="113.775"><stop offset=".015" stop-color="#f9cd55"></stop><stop
+              offset="1" stop-color="#fdbc8c"></stop>
+</linearGradient><linearGradient id="linear-gradient" gradientUnits="userSpaceOnUse" x1="250" x2="258" y1="52.364"
+                                 y2="52.364"><stop offset=".015" stop-color="#94caba"></stop><stop offset="1"
+                                                                                                   stop-color="#e4f2ee"></stop>
+</linearGradient><linearGradient id="linear-gradient-2" x1="191.436" x2="205.292"
+                                 xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#linear-gradient" y1="108"
+                                 y2="108"></linearGradient><linearGradient id="linear-gradient-3" x1="454.708"
+                                                                           x2="468.564"
+                                                                           xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                           xlink:href="#linear-gradient" y1="260"
+                                                                           y2="260"></linearGradient><linearGradient
+              id="linear-gradient-4" x1="474" x2="490" xmlns:xlink="http://www.w3.org/1999/xlink"
+              xlink:href="#linear-gradient" y1="184" y2="184"></linearGradient><linearGradient id="linear-gradient-5"
+                                                                                               x1="454.708" x2="468.564"
+                                                                                               xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                               xlink:href="#linear-gradient"
+                                                                                               y1="108"
+                                                                                               y2="108"></linearGradient><linearGradient
+              id="linear-gradient-6" x1="402" x2="410" xmlns:xlink="http://www.w3.org/1999/xlink"
+              xlink:href="#linear-gradient" y1="52.364" y2="52.364"></linearGradient><linearGradient
+              id="New_Gradient_Swatch_28" gradientUnits="userSpaceOnUse" x1="114.461" x2="397.539" y1="533.539"
+              y2="250.461"><stop offset=".015" stop-color="#b7bfd8"></stop><stop offset="1" stop-color="#e4f2ee"></stop>
+</linearGradient><g id="_34-day_temp"><g id="linear_color"><circle cx="330" cy="176" fill="url(#New_Gradient_Swatch_34)" r="88"></circle><path
+              d="m258 59.292-8-13.856" fill="url(#linear-gradient)"></path><path d="m205.292 112-13.856-8"
+                                                                                 fill="url(#linear-gradient-2)"></path><path
+              d="m454.708 256 13.856 8" fill="url(#linear-gradient-3)"></path><path d="m474 184h16"
+                                                                                    fill="url(#linear-gradient-4)"></path><path
+              d="m454.708 112 13.856-8" fill="url(#linear-gradient-5)"></path><path d="m402 59.292 8-13.856"
+                                                                                    fill="url(#linear-gradient-6)"></path><path
+              d="m392 288q-4.038 0-8 .3v-.3h-8.272c.174-2.645.272-5.311.272-8a120 120 0 0 0 -240 0c0 2.689.1 5.355.272 8h-8.272v.3q-3.96-.3-8-.3a104 104 0 0 0 0 208q4.038 0 8-.3v.3h256v-.3q3.96.3 8 .3a104 104 0 0 0 0-208z"
+              fill="url(#New_Gradient_Swatch_28)"></path><path
+              d="m330 52a12 12 0 0 0 12-12v-16a12 12 0 0 0 -24 0v16a12 12 0 0 0 12 12z"></path><path
+              d="m247.607 65.292a12 12 0 1 0 20.786-12l-8-13.856a12 12 0 0 0 -20.786 12z"></path><path
+              d="m185.436 114.393 13.856 8a12 12 0 1 0 12-20.786l-13.856-8a12 12 0 0 0 -12 20.786z"></path><path
+              d="m448.708 266.393 13.856 8a12 12 0 0 0 12-20.786l-13.856-8a12 12 0 1 0 -12 20.786z"></path><path
+              d="m462 184a12 12 0 0 0 12 12h16a12 12 0 0 0 0-24h-16a12 12 0 0 0 -12 12z"></path><path
+              d="m454.719 124a11.956 11.956 0 0 0 5.989-1.609l13.856-8a12 12 0 1 0 -12-20.786l-13.856 8a12 12 0 0 0 6.011 22.395z"></path><path
+              d="m396 69.685a12 12 0 0 0 16.393-4.393l8-13.856a12 12 0 1 0 -20.786-12l-8 13.856a12 12 0 0 0 4.393 16.393z"></path><path
+              d="m392 276c-1.348 0-2.7.023-4.058.07a132.049 132.049 0 0 0 -1.675-17.413 100 100 0 1 0 -152.838-108.722c-60.816 10.522-107.51 62.8-109.371 126.135-1.355-.047-2.71-.07-4.058-.07a116 116 0 0 0 0 232h272a116 116 0 0 0 0-232zm-62-176a76 76 0 0 1 49.573 133.6 132.239 132.239 0 0 0 -120.273-85.559 75.844 75.844 0 0 1 70.7-48.041zm62 384h-272a92 92 0 0 1 0-184c3.546-.18 7.185.712 10.679 0 4.876.142 10.922.347 14.351-3.8 4.442-4.27 2.926-10.8 2.97-16.2a108.152 108.152 0 0 1 96.779-107.419c.044-.006.089-.009.134-.015a108.042 108.042 0 0 1 119.087 107.434c.045 5.4-1.472 11.933 2.97 16.2 3.42 4.141 9.486 3.946 14.351 3.8 3.495.713 7.132-.18 10.679 0a92 92 0 0 1 0 184z"></path><path
+              d="m273.7 331.348h16a12 12 0 0 0 0-24h-16a44.05 44.05 0 0 0 -44 44v16a44.051 44.051 0 0 0 44 44h16a12 12 0 0 0 0-24h-16a20.023 20.023 0 0 1 -20-20v-16a20.022 20.022 0 0 1 20-20z"></path><circle
+              cx="209.696" cy="311.348" r="12"></circle>
+</g>
+</g></svg><img></span>&nbsp; &nbsp;&nbsp;<span style="font-size: 2.25rem;">
+            <span class="u-text-palette-2-base"><b>{{ temp_C }}&nbsp;</b>
+            </span><b>°C</b>
+          </span>
+          </p>
+          <p class="u-text u-text-2"><span class="u-icon u-icon-2"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xml:space="preserve" class="u-svg-content" viewBox="0 0 464 464" x="0px" y="0px" style="width: 1em; height: 1em;"><path style="fill:#FDBD40;" d="M144,48h176v400H144V48z"></path><path
+              style="fill:#5A6470;" d="M208,352h48v96h-48V352z"></path><path style="fill:#A7C6D3;"
+                                                                             d="M0,224h144v208H0V224z"></path><path
+              style="fill:#CFDFE8;" d="M16,128h96v96H16V128z"></path><path style="fill:#A7C6D3;"
+                                                                           d="M32,72h64v56H32V72z"></path><path
+              style="fill:#5A6470;" d="M56,16h16v56H56V16z"></path><path style="fill:#E9686A;"
+                                                                         d="M320,224h144v208H320V224z"></path><path
+              style="fill:#F98C96;" d="M448,224h-96V72l96,32V224z"></path><g><path style="fill:#5A6470;" d="M376,120h16v104h-16V120z"></path><path
+              style="fill:#5A6470;" d="M408,120h16v104h-16V120z"></path><path style="fill:#5A6470;"
+                                                                              d="M24,248h96v16H24V248z"></path><path
+              style="fill:#5A6470;" d="M24,280h96v16H24V280z"></path><path style="fill:#5A6470;"
+                                                                           d="M24,312h96v16H24V312z"></path><path
+              style="fill:#5A6470;" d="M24,344h96v16H24V344z"></path><path style="fill:#5A6470;"
+                                                                           d="M184,96h32v32h-32V96z"></path><path
+              style="fill:#5A6470;" d="M248,96h32v32h-32V96z"></path><path style="fill:#5A6470;"
+                                                                           d="M184,160h32v32h-32V160z"></path><path
+              style="fill:#5A6470;" d="M248,160h32v32h-32V160z"></path><path style="fill:#5A6470;"
+                                                                             d="M184,224h32v32h-32V224z"></path><path
+              style="fill:#5A6470;" d="M248,224h32v32h-32V224z"></path><path style="fill:#5A6470;"
+                                                                             d="M184,288h32v32h-32V288z"></path><path
+              style="fill:#5A6470;" d="M248,288h32v32h-32V288z"></path><path style="fill:#5A6470;"
+                                                                             d="M368,384h48v48h-48V384z"></path><path
+              style="fill:#5A6470;" d="M344,248h16v16h-16V248z"></path><path style="fill:#5A6470;"
+                                                                             d="M376,248h32v16h-32V248z"></path><path
+              style="fill:#5A6470;" d="M424,248h16v16h-16V248z"></path><path style="fill:#5A6470;"
+                                                                             d="M344,280h16v16h-16V280z"></path><path
+              style="fill:#5A6470;" d="M376,280h32v16h-32V280z"></path><path style="fill:#5A6470;"
+                                                                             d="M424,280h16v16h-16V280z"></path><path
+              style="fill:#5A6470;" d="M344,312h16v16h-16V312z"></path><path style="fill:#5A6470;"
+                                                                             d="M376,312h32v16h-32V312z"></path><path
+              style="fill:#5A6470;" d="M424,312h16v16h-16V312z"></path><path style="fill:#5A6470;"
+                                                                             d="M344,344h16v16h-16V344z"></path><path
+              style="fill:#5A6470;" d="M376,344h32v16h-32V344z"></path><path style="fill:#5A6470;"
+                                                                             d="M424,344h16v16h-16V344z"></path>
+</g></svg><img></span>&nbsp; &nbsp;&nbsp;<span class="u-text-black"><b>{{ result }}</b>
+          </span>
+          </p>
+          <p class="u-text u-text-3"><span class="u-icon u-icon-3"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xml:space="preserve" class="u-svg-content" viewBox="0 0 512 512" style="width: 1em; height: 1em;"><path d="m440.542 254.769h-423.516c-9.403 0-17.026-7.623-17.026-17.026s7.623-17.026 17.026-17.026h423.515c20.625 0 37.406-16.78 37.406-37.406s-16.78-37.405-37.406-37.405c-13.996 0-26.717 7.719-33.197 20.144-4.348 8.338-14.631 11.572-22.969 7.224-8.337-4.348-11.573-14.632-7.224-22.969 12.368-23.718 36.658-38.451 63.39-38.451 39.402 0 71.458 32.056 71.458 71.458.001 39.401-32.055 71.457-71.457 71.457z" fill="#fca863"></path><path
+              d="m286.893 294.993h-269.867c-9.403 0-17.026 7.623-17.026 17.026s7.623 17.026 17.026 17.026h269.867c20.625 0 37.406 16.78 37.406 37.406 0 20.625-16.78 37.405-37.406 37.405-13.996 0-26.717-7.719-33.197-20.144-4.348-8.338-14.631-11.572-22.969-7.224-8.337 4.348-11.573 14.632-7.224 22.969 12.368 23.718 36.658 38.451 63.39 38.451 39.402 0 71.458-32.056 71.458-71.458.001-39.401-32.056-71.457-71.458-71.457z"
+              fill="#fca863"></path><g fill="#e0d3ce"><path d="m456.992 300.801h-.107c-4.268 0-7.726-3.459-7.726-7.726s3.459-7.726 7.726-7.726h.107c4.268 0 7.726 3.459 7.726 7.726s-3.458 7.726-7.726 7.726z"></path><path
+              d="m187.031 426.832h-.107c-4.267 0-7.726-3.459-7.726-7.726s3.459-7.726 7.726-7.726h.107c4.267 0 7.726 3.459 7.726 7.726.001 4.267-3.459 7.726-7.726 7.726z"></path><path
+              d="m314.72 175.468h-.107c-4.268 0-7.726-3.459-7.726-7.726s3.459-7.726 7.726-7.726h.107c4.268 0 7.726 3.459 7.726 7.726.001 4.267-3.458 7.726-7.726 7.726z"></path><path
+              d="m154.065 90.993h-.107c-4.267 0-7.726-3.459-7.726-7.726s3.459-7.726 7.726-7.726h.107c4.267 0 7.726 3.459 7.726 7.726.001 4.267-3.459 7.726-7.726 7.726z"></path>
+</g><path d="m186.978 384.595h-121.562c-4.267 0-7.726-3.459-7.726-7.726s3.459-7.726 7.726-7.726h121.561c4.267 0 7.726 3.459 7.726 7.726s-3.458 7.726-7.725 7.726z"
+          fill="#f8f3f1"></path><ellipse cx="249.281" cy="112.582" fill="#bcea73" rx="56.279" ry="38.673"
+                                         transform="matrix(.707 -.707 .707 .707 -6.595 209.242)"></ellipse><path
+              d="m276.624 139.927c-14.433 14.433-34.357 20.016-53.044 16.74 11.775-2.06 23.055-7.644 32.152-16.74 18.152-18.152 22.314-45.009 12.445-67.137-4.543-2.019-9.272-3.462-14.093-4.296 11.734-2.06 23.952-.628 34.995 4.296 9.859 22.129 5.697 48.985-12.455 67.137z"
+              fill="#99d53b"></path><path
+              d="m183.376 170.966c-3.676 0-6.934-2.632-7.598-6.377-.746-4.201 2.055-8.212 6.257-8.958 35.012-6.217 60.184-46.46 60.434-46.866 2.238-3.629 6.996-4.765 10.627-2.53 3.632 2.233 4.77 6.984 2.54 10.618-1.164 1.897-28.99 46.551-70.899 53.992-.458.082-.913.121-1.361.121z"
+              fill="#8dc637"></path><path
+              d="m154.065 130.14h-57.743c-4.267 0-7.726-3.459-7.726-7.726s3.459-7.726 7.726-7.726h57.743c4.267 0 7.726 3.459 7.726 7.726.001 4.267-3.459 7.726-7.726 7.726z"
+              fill="#f8f3f1"></path><path
+              d="m449.674 85.564h-114.35c-4.268 0-7.726-3.459-7.726-7.726s3.459-7.726 7.726-7.726h114.35c4.268 0 7.726 3.459 7.726 7.726s-3.458 7.726-7.726 7.726z"
+              fill="#f8f3f1"></path><ellipse cx="447.72" cy="394.243" fill="#bcea73" rx="38.673" ry="56.279"
+                                             transform="matrix(.884 -.468 .468 .884 -132.439 255.331)"></ellipse><path
+              d="m413.544 412.338c-9.551-18.039-9.03-38.723-.404-55.621-1.493 11.86.527 24.284 6.547 35.653 12.012 22.687 36.458 34.561 60.51 31.635 3.266-3.749 6.035-7.844 8.25-12.207-1.481 11.821-6.442 23.078-14.396 32.185-24.049 2.916-48.495-8.958-60.507-31.645z"
+              fill="#99d53b"></path><path
+              d="m447.565 401.68c-2.141 0-4.27-.885-5.797-2.619-1.471-1.67-35.968-41.396-30.758-83.641.523-4.235 4.39-7.246 8.614-6.722 4.235.522 7.244 4.379 6.722 8.614-4.352 35.293 26.71 71.185 27.024 71.543 2.811 3.206 2.496 8.087-.706 10.901-1.467 1.29-3.287 1.924-5.099 1.924z"
+              fill="#8dc637"></path></svg><img></span>&nbsp; &nbsp;&nbsp;<span class="u-text-black"><b>{{
+              windSpeed
+            }} </b>
+            <span style="font-size: 1.25rem;">km/s</span>
+          </span>
+          </p>
+          <p class="u-text u-text-4"><span class="u-icon u-icon-4"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xml:space="preserve" class="u-svg-content" viewBox="0 0 128 128" style="width: 1em; height: 1em;"><g><path d="m6.306 39.363h115.387v82.331h-115.387z" fill="#dfeef4"></path><path
+              d="m6.306 15.838h115.387v23.525h-115.387z" fill="#f45858"></path><path
+              d="m60.269 6.306h7.462v19.062h-7.462z" fill="#6d7a84"></path><path d="m90.052 6.306h7.462v19.062h-7.462z"
+                                                                                 fill="#6d7a84"></path><path
+              d="m30.486 6.306h7.462v19.062h-7.462z" fill="#6d7a84"></path><g fill="#3ea2e5"><circle cx="27.661" cy="57.048" r="6.283"></circle><circle
+              cx="51.887" cy="57.048" r="6.283"></circle><circle cx="76.113" cy="57.048" r="6.283"></circle><circle
+              cx="100.339" cy="57.048" r="6.283"></circle><circle cx="27.661" cy="80.528" r="6.283"></circle><circle
+              cx="51.887" cy="80.528" r="6.283"></circle><circle cx="76.113" cy="80.528" r="6.283"></circle><circle
+              cx="100.339" cy="80.528" r="6.283"></circle><circle cx="27.661" cy="104.009" r="6.283"></circle><circle
+              cx="51.887" cy="104.009" r="6.283"></circle><circle cx="76.113" cy="104.009" r="6.283"></circle><circle
+              cx="100.339" cy="104.009" r="6.283"></circle>
+</g>
+</g></svg><img></span>&nbsp; &nbsp;&nbsp;<span class="u-text-black"><b>{{ date }}</b>
+          </span>
+          </p>
+          <p class="u-text u-text-5"><span class="u-icon u-icon-5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xml:space="preserve" class="u-svg-content" viewBox="-87 0 479 479.74583" style="width: 1em; height: 1em;"><linearGradient id="a"><stop offset="0" stop-color="#12c2e9"></stop><stop
+              offset=".5" stop-color="#c471ed"></stop><stop offset=".982" stop-color="#f64f59"></stop>
+</linearGradient><linearGradient id="b" gradientUnits="userSpaceOnUse" x1="152.372915" x2="152.372915"
+                                 xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#a" y1="607.745826"
+                                 y2="-56.254174"></linearGradient><linearGradient id="c" gradientUnits="userSpaceOnUse"
+                                                                                  x1="112.372915" x2="112.372915"
+                                                                                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                  xlink:href="#a" y1="607.745826"
+                                                                                  y2="-56.254174"></linearGradient><linearGradient
+              id="d" gradientUnits="userSpaceOnUse" x1="192.372915" x2="192.372915"
+              xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#a" y1="607.745826"
+              y2="-56.254174"></linearGradient><path
+              d="m304.371094 322.601562c0-83.65625-139.269532-309.496093-145.199219-319.0625-1.554687-2.21875-4.089844-3.539062-6.800781-3.539062-2.707032 0-5.242188 1.320312-6.796875 3.539062-5.929688 9.566407-145.203125 235.40625-145.203125 319.0625 0 86.648438 68.1875 157.144532 152 157.144532 83.816406 0 152-70.496094 152-157.144532zm-152 141.144532c-74.988282 0-136-63.3125-136-141.144532 0-69.054687 107.59375-252.289062 136-299.457031 28.410156 47.203125 136 230.402344 136 299.457031 0 77.832032-61.007813 141.144532-136 141.144532zm0 0"
+              fill="url(#b)"></path><path
+              d="m197.019531 273.242188c-1.726562-1.246094-3.882812-1.75-5.984375-1.402344-2.101562.347656-3.980468 1.519531-5.214844 3.257812l-80 112c-2.566406 3.597656-1.730468 8.59375 1.863282 11.160156 3.597656 2.566407 8.59375 1.734376 11.160156-1.863281l80-112c2.570312-3.585937 1.753906-8.574219-1.824219-11.152343zm0 0"
+              fill="url(#b)"></path><path
+              d="m136.371094 303.746094c0-17.945313-10.542969-32-24-32-13.453125 0-24 14.054687-24 32 0 17.945312 10.546875 32 24 32 13.457031 0 24-14.054688 24-32zm-32 0c0-9.769532 4.738281-16 8-16 3.265625 0 8 6.230468 8 16 0 9.769531-4.734375 16-8 16-3.261719 0-8-6.230469-8-16zm0 0"
+              fill="url(#c)"></path><path
+              d="m192.371094 335.746094c-13.453125 0-24 14.054687-24 32 0 17.945312 10.546875 32 24 32 13.457031 0 24-14.054688 24-32 0-17.945313-10.542969-32-24-32zm0 48c-3.261719 0-8-6.230469-8-16 0-9.769532 4.738281-16 8-16 3.265625 0 8 6.230468 8 16 0 9.769531-4.734375 16-8 16zm0 0"
+              fill="url(#d)"></path></svg><img></span>&nbsp; &nbsp;&nbsp;<span class="u-text-black"><b>{{ humidity }}&nbsp;</b>%<b>&nbsp;</b>
+          </span>
+          </p>
+          <p class="u-text u-text-6"><span class="u-icon u-icon-6"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xml:space="preserve" class="u-svg-content" viewBox="0 0 54 60" style="width: 1em; height: 1em;"><!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch --><title></title><desc>Created with Sketch.</desc><defs></defs><g
+              id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="029---Pressure-Gauge-" transform="translate(-1.000000, -1.000000)" fill-rule="nonzero"><g id="Icons" transform="translate(1.000000, 2.000000)"><path d="M21,51.3 L21,57 C21,57.5522847 20.5522847,58 20,58 L14,58 C13.4477153,58 13,57.5522847 13,57 L13,47.9" id="Shape" fill="#3F51B5"></path><path
+              d="M41,47.9 L41,57 C41,57.5522847 40.5522847,58 40,58 L34,58 C33.4477153,58 33,57.5522847 33,57 L33,51.3"
+              id="Shape" fill="#3F51B5"></path><path
+              d="M53,26 C53,32.8956287 50.2607222,39.5088305 45.3847763,44.3847763 C40.5088305,49.2607222 33.8956287,52 27,52 C26.5,52 26,51.99 25.5,51.96 C11.7219387,51.1948475 0.941665703,39.799291 0.941665703,26 C0.941665703,12.200709 11.7219387,0.805152481 25.5,0.04 C26,0.01 26.5,0 27,0 C33.8956287,1.11022302e-15 40.5088305,2.73927785 45.3847763,7.61522369 C50.2607222,12.4911695 53,19.1043713 53,26 Z"
+              id="Shape" fill="#1566C0"></path><ellipse id="Oval" fill="#2296F3" cx="25.5" cy="26" rx="24.5"
+                                                        ry="25.96"></ellipse><circle id="Oval" fill="#CFD8DC" cx="27"
+                                                                                     cy="26" r="22"></circle><ellipse
+              id="Oval" fill="#F5F5F5" cx="25.5" cy="26" rx="20.5" ry="22"></ellipse><path
+              d="M19.02,34.98 L16.2,37.8 C15.8127181,38.1905035 15.1827817,38.1949712 14.79,37.81 C8.3212483,31.1531774 8.40592585,20.5328303 14.98,13.98 L19.22,18.22 C14.9935549,22.444844 14.9180352,29.2727077 19.05,33.59 C19.4164107,33.9856362 19.4031394,34.6005411 19.02,34.98 Z"
+              id="Shape" fill="#8BC34A"></path><path
+              d="M39.01,13.99 L34.78,18.22 C30.480164,13.9306201 23.519836,13.9306201 19.22,18.22 L14.98,13.98 C18.1650641,10.7894021 22.4887997,8.99730766 26.9970748,8.99918376 C31.50535,9.00105986 35.8275926,10.7967523 39.01,13.99 Z"
+              id="Shape" fill="#FFEB3A"></path><path
+              d="M44,26 C44.003184,30.3909151 42.2999905,34.6112496 39.25,37.77 C39.0627299,37.9681041 38.8038286,38.0828215 38.5312785,38.0884604 C38.2587284,38.0940994 37.9953038,37.9901888 37.8,37.8 L34.98,34.98 C34.5965254,34.6046377 34.5832001,33.9916726 34.95,33.6 C37.3741675,31.06375 38.4471502,27.5255059 37.84,24.07 C37.4560126,21.8482694 36.3859454,19.8025526 34.78,18.22 L37.41,15.59 L39.01,13.99 C42.2059735,17.1693161 44.0019823,21.4919746 44,26 Z"
+              id="Shape" fill="#E91E63"></path><path
+              d="M39.01,13.99 L37.41,15.59 C36.9814335,15.0244943 36.5136118,14.489841 36.01,13.99 C33.2004664,11.1677839 29.4863331,9.42578807 25.52,9.07 C30.5240885,8.62600577 35.4667173,10.4286547 39.01,13.99 Z"
+              id="Shape" fill="#FDD834"></path><path
+              d="M44,26 C44.003184,30.3909151 42.2999905,34.6112496 39.25,37.77 C39.0627299,37.9681041 38.8038286,38.0828215 38.5312785,38.0884604 C38.2587284,38.0940994 37.9953038,37.9901888 37.8,37.8 L36.97,36.97 C42.1732055,30.8513219 42.3570619,21.9175704 37.41,15.59 L39.01,13.99 C42.2059735,17.1693161 44.0019823,21.4919746 44,26 Z"
+              id="Shape" fill="#AD1457"></path><circle id="Oval" fill="#4482C3" cx="27" cy="26" r="2"></circle>
+</g><g id="Outline" fill="#000000"><path d="M28,5 C15.2974508,5 5,15.2974508 5,28 C5,40.7025492 15.2974508,51 28,51 C40.7025492,51 51,40.7025492 51,28 C50.9856716,15.3033905 40.6966095,5.01432841 28,5 Z M28,49 C16.4020203,49 7,39.5979797 7,28 C7,16.4020203 16.4020203,7 28,7 C39.5979797,7 49,16.4020203 49,28 C48.9867741,39.592497 39.592497,48.9867741 28,49 Z" id="Shape"></path><path
+              d="M40.771,15.364 C40.75,15.339 40.741,15.307 40.717,15.283 C40.689678,15.2628418 40.6613047,15.2441488 40.632,15.227 C40.406,15.003 40.193,14.768 39.954,14.556 C32.8920239,8.23841108 22.1311224,8.51498348 15.403,15.187 C15.3576555,15.2125041 15.3142095,15.2412453 15.273,15.273 C15.2284162,15.326618 15.189852,15.3849673 15.158,15.447 C8.30238895,22.3798293 8.2645784,33.5268223 15.073,40.506 C15.4381445,40.8831518 15.9400525,41.0969675 16.465,41.099 L16.48,41.099 C17.014676,41.0977837 17.5272166,40.8853633 17.906,40.508 L20.729,37.685 C21.490211,36.9205116 21.5079089,35.6900651 20.769,34.904 C16.9077013,30.955164 16.9786642,24.6237989 20.9275001,20.7625001 C24.876336,16.9012013 31.2077012,16.9721641 35.069,20.921 L35.069,20.927 L35.075,20.927 C36.5274427,22.367408 37.4961468,24.2237415 37.847,26.239 C37.89,26.492 37.907,26.744 37.932,26.996 L30.812,26.996 C30.3945886,25.7978704 29.2647579,24.9950545 27.996,24.9950545 C26.7272421,24.9950545 25.5974114,25.7978704 25.18,26.996 L22,26.996 C21.4477153,26.996 21,27.4437153 21,27.996 C21,28.5482847 21.4477153,28.996 22,28.996 L25.184,28.996 C25.6014114,30.1941296 26.7312421,30.9969455 28,30.9969455 C29.2687579,30.9969455 30.3985886,30.1941296 30.816,28.996 L37.936,28.996 C37.7228021,31.2136652 36.7688529,33.2948808 35.228,34.904 C34.492496,35.6903345 34.5115027,36.9178146 35.271,37.681 L38.093,40.503 C38.455038,40.9033378 38.9791751,41.1177742 39.518,41.086 C40.0657112,41.0792136 40.5879029,40.8534107 40.968,40.459 C47.7528427,33.4359553 47.6638951,22.2730348 40.768,15.359 L40.771,15.364 Z M19.315,36.271 L16.488,39.091 C13.0645941,35.5515632 11.4654112,30.6307734 12.154,25.755 C12.5916911,22.6602276 13.937439,19.764799 16.021,17.435 L18.85,20.264 C14.8787771,24.9299721 15.0796116,31.8434282 19.315,36.271 Z M28.028,16 C25.184027,16.0007248 22.4321348,17.0082405 20.26,18.844 L17.441,16.025 C23.459774,10.6544537 32.5481011,10.6475732 38.575,16.009 L35.749,18.835 C33.59379,17.0028718 30.8567134,15.9978709 28.028,16 Z M28,29 C27.4477153,29 27,28.5522847 27,28 C27,27.4477153 27.4477153,27 28,27 C28.5522847,27 29,27.4477153 29,28 C29,28.5522847 28.5522847,29 28,29 Z M39.508,39.094 L36.672,36.294 C38.5737103,34.3140429 39.7312694,31.7367425 39.948,29 L41,29 C41.5522847,29 42,28.5522847 42,28 C42,27.4477153 41.5522847,27 41,27 L39.944,27 C39.914,26.636 39.884,26.272 39.821,25.906 C39.4591137,23.8166371 38.5413207,21.8632613 37.164,20.251 L39.984,17.43 C45.5167366,23.6640515 45.3092133,33.1089773 39.508,39.094 Z"
+              id="Shape"></path><path
+              d="M35,61 L41,61 C42.1045695,61 43,60.1045695 43,59 L43,50.437 C52.8886864,43.8298435 57.2896791,31.5304061 53.8374582,20.1495974 C50.3852374,8.76878877 39.8928817,0.987055679 28,0.987055679 C16.1071183,0.987055679 5.61476263,8.76878877 2.16254176,20.1495974 C-1.28967911,31.5304061 3.11131364,43.8298435 13,50.437 L13,59 C13,60.1045695 13.8954305,61 15,61 L21,61 C22.1045695,61 23,60.1045695 23,59 L23,54.528 C26.3036287,55.1573346 29.6963713,55.1573346 33,54.528 L33,59 C33,60.1045695 33.8954305,61 35,61 Z M41,59 L35,59 L35,54.074 C37.090378,53.5130133 39.1050658,52.7007584 41,51.655 L41,59 Z M21,59 L15,59 L15,51.655 C16.8949342,52.7007584 18.909622,53.5130133 21,54.074 L21,59 Z M3,28 C3,14.1928813 14.1928813,3 28,3 C41.8071187,3 53,14.1928813 53,28 C53,41.8071187 41.8071187,53 28,53 C14.199278,52.9845691 3.0154309,41.800722 3,28 Z"
+              id="Shape"></path>
+</g>
+</g>
+</g></svg><img></span>&nbsp; &nbsp;&nbsp;<span class="u-text-black"><b>{{ pressure }} </b>
+            <span style="font-size: 1.25rem;">Pa</span>
+          </span>
+          </p>
         </div>
-
-        <div class="weather-box">
-          <div class="temp" v-if="temp_C">{{ temp_C }} °C</div>
-          <div class="humidity-pressure" v-if="temp_C"> Humidity: {{ humidity }}     Pressure: {{ pressure }}  </div>
-          <div class="weather">{{ weatherDesc }}</div>
+        <div class="w-table" v-show="showTable">
+          <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+              <th class="w-table">Date</th>
+              <th class="w-table">Minimum</th>
+              <th class="w-table">Maximum</th>
+              <th class="w-table">Avarage</th>
+              <th class="w-table">Detail</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="w in weather3Days" :key="w" :value="w" v-show="!showMore">
+              <td class="w-table">{{ w.date }}</td>
+              <td class="w-table"> {{ w.mintempC }}</td>
+              <td class="w-table">{{ w.maxtempC }}</td>
+              <td class="w-table">{{ w.avgtempC }}</td>
+              <td class="w-table" @click="clickMethod2(w)">See</td>
+            </tr>
+            <tr v-for="w in weather5Days" :key="w" :value="w" v-show="showMore">
+              <td class="w-table">{{ w.date }}</td>
+              <td class="w-table"> {{ w.mintempC }}</td>
+              <td class="w-table">{{ w.maxtempC }}</td>
+              <td class="w-table">{{ w.avgtempC }}</td>
+              <td class="w-table" @click="clickMethod2(w)">See</td>
+            </tr>
+            </tbody>
+          </table>
         </div>
-      </div>
-      <div v-show="showTable">
-        <table class="table table-striped table-bordered">
-          <thead>
-          <tr>
-            <th class="w-table">Date</th>
-            <th class="w-table">Minimum</th>
-            <th class="w-table">Maximum</th>
-            <th class="w-table">Avarage</th>
-            <th class="w-table">Detail</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="w in weather3Days" :key="w" :value="w" v-show="!showMore">
-            <td class="w-table">{{ w.date }}</td>
-            <td class="w-table"> {{ w.mintempC }}</td>
-            <td class="w-table">{{ w.maxtempC }}</td>
-            <td class="w-table">{{ w.avgtempC }}</td>
-            <td class="w-table" @click="clickMethod2(w)">See</td>
-          </tr>
-          <tr v-for="w in weather5Days" :key="w" :value="w" v-show="showMore">
-            <td class="w-table">{{ w.date }}</td>
-            <td class="w-table"> {{ w.mintempC }}</td>
-            <td class="w-table">{{ w.maxtempC }}</td>
-            <td class="w-table">{{ w.avgtempC }}</td>
-            <td class="w-table" @click="clickMethod2(w)">See</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="show-more-less" v-show="showTable">
-        <label @click="clickMethod" v-show="!showMore">Show more</label>
-        <label @click="clickMethod" v-show="showMore">Show less</label>
+        <div class="show-more-less" v-show="showTable">
+          <label @click="clickMethod" v-show="!showMore">Show more</label>
+          <label @click="clickMethod" v-show="showMore">Show less</label>
 
-        <span class="tiptext" v-show="!showMore">See next 5 days forecast</span>
-      </div>
+          <span class="tiptext" v-show="!showMore">See next 5 days forecast</span>
+        </div>
+      </section>
+
       <modal name="example" :width="1200" :height="600" :adaptive="true">
         <div slot="top-right">
           <button @click="$modal.hide()">
@@ -82,7 +263,9 @@
                 d="m355 86.259a11.995 11.995 0 0 0 16.393-4.392l12.5-21.651a12 12 0 0 0 -20.786-12l-12.5 21.651a12 12 0 0 0 4.393 16.392z"></path><path
                 d="m495.5 244.5h-66.894c-5.938-89.5-80.63-160.5-171.606-160.5s-165.668 71-171.606 160.5h-68.894a12 12 0 0 0 0 24h227.5v75.5a12 12 0 0 0 24 0v-75.5h227.5a12 12 0 0 0 0-24zm-238.5-136.5c77.568 0 141.39 59.983 147.519 136h-136.519v-63.029l19.515 19.514a12 12 0 0 0 16.97-16.97l-40-40a12 12 0 0 0 -16.97 0l-40 40a12 12 0 0 0 16.97 16.97l19.515-19.514v63.029h-134.519c6.129-76.017 69.951-136 147.519-136z"></path>
 </g>
-</g></svg><img></span>&nbsp; Sunrise:&nbsp; <span class="u-text-palette-2-base"><b><i>{{ model_date.astronomy[0].sunrise }}</i></b>
+</g></svg><img></span>&nbsp; Sunrise:&nbsp; <span class="u-text-palette-2-base"><b><i>{{
+                model_date.astronomy[0].sunrise
+              }}</i></b>
           </span>
             </p>
             <p class="u-text u-text-3"><span class="u-icon u-icon-3"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xml:space="preserve" class="u-svg-content" viewBox="0 0 512.001 512.001" x="0px" y="0px" style="width: 1em; height: 1em;"><g><g><path d="M504.397,356.45c-18.479,0-27.883,8.599-36.183,16.185c-7.457,6.818-13.348,12.203-25.92,12.203    s-18.463-5.385-25.92-12.203c-8.299-7.587-17.704-16.185-36.183-16.185c-9.042,0-15.903,2.066-21.533,5.058    c-1.373-37.436-23.101-71.224-56.523-88.041v-24.124h79.588c4.2,0,7.604-3.405,7.604-7.604v-42.582    c0-4.199-3.404-7.604-7.604-7.604h-79.588v-22.457h79.588c4.2,0,7.604-3.405,7.604-7.604V118.91c0-4.199-3.404-7.604-7.604-7.604    h-79.588V88.849h79.588c4.2,0,7.604-3.405,7.604-7.604V38.663c0-4.199-3.404-7.604-7.604-7.604h-79.588V10.002    c0-4.199-3.404-7.604-7.604-7.604h-77.053c-4.199,0-7.604,3.405-7.604,7.604v100.866c0,4.199,3.405,7.604,7.604,7.604    c4.199,0,7.604-3.405,7.604-7.604V17.606h61.846v21.058c0,4.199,3.404,7.604,7.604,7.604h79.588v27.374h-79.588    c-4.2,0-7.604,3.405-7.604,7.604v37.665c0,4.199,3.404,7.604,7.604,7.604h79.588v27.374h-79.588c-4.2,0-7.604,3.405-7.604,7.604    v37.665c0,4.199,3.404,7.604,7.604,7.604h79.588v27.374h-79.588c-4.2,0-7.604,3.405-7.604,7.604v36.54    c0,3.006,1.771,5.731,4.52,6.95c31.633,14.037,52.074,45.457,52.074,80.049c0,2.735-0.127,5.465-0.374,8.144    c-7.06,6.438-12.974,11.415-25.056,11.415c-12.572,0-18.462-5.385-25.918-12.202c-8.298-7.587-17.703-16.186-36.18-16.186    s-27.881,8.6-36.18,16.186c-7.456,6.817-13.345,12.202-25.916,12.202c-12.076,0-17.99-4.972-25.045-11.406    c-0.248-2.68-0.374-5.411-0.374-8.152c0-34.593,20.445-66.014,52.083-80.048c2.749-1.22,4.521-3.944,4.521-6.951V136.215    c0-4.199-3.405-7.604-7.604-7.604s-7.604,3.405-7.604,7.604v137.253c-33.429,16.815-55.161,50.606-56.533,88.046    c-5.632-2.995-12.495-5.062-21.542-5.062c-18.477,0-27.881,8.599-36.18,16.186c-7.456,6.817-13.346,12.202-25.918,12.202    c-12.571,0-18.46-5.385-25.916-12.202c-8.299-7.588-17.704-16.187-36.181-16.187c-4.199,0-7.604,3.405-7.604,7.604    s3.405,7.604,7.604,7.604c12.572,0,18.46,5.385,25.917,12.202c8.298,7.587,17.703,16.186,36.179,16.186    c18.477,0,27.882-8.599,36.181-16.186c7.456-6.817,13.345-12.202,25.917-12.202c12.572,0,18.461,5.385,25.918,12.202    c8.298,7.587,17.703,16.186,36.18,16.186c18.476,0,27.881-8.599,36.179-16.186c7.456-6.817,13.345-12.202,25.917-12.202    s18.461,5.385,25.918,12.202c8.298,7.587,17.703,16.186,36.181,16.186c18.478,0,27.882-8.599,36.181-16.185    c7.456-6.818,13.346-12.203,25.919-12.203c12.573,0,18.463,5.385,25.92,12.203c8.299,7.587,17.705,16.185,36.183,16.185    c18.479,0,27.883-8.599,36.183-16.185c7.457-6.818,13.347-12.203,25.92-12.203c4.2,0,7.604-3.405,7.604-7.604    S508.598,356.45,504.397,356.45z"></path>
@@ -134,7 +317,9 @@
                 d="M350.423,116.556l35.565,34.435l-8.197,50.271c-1.257,7.711,3.546,11.465,10.727,8.384l44.048-18.895l44.048,18.895    c7.181,3.081,11.717-0.624,10.135-8.278l-10.433-50.38l38.106-34.745c5.773-5.263,4.223-10.669-3.464-12.072l-48.111-8.78    l-23.525-43.313c-3.729-6.866-9.775-6.866-13.505,0l-23.524,43.313l-48.116,8.784C346.49,105.576,344.809,111.117,350.423,116.556    z"></path><path
                 d="M427.939,323.493l-34.623-6.315l-16.932-31.172c-2.685-4.94-7.034-4.94-9.719,0l-16.932,31.172l-34.619,6.315    c-5.532,1.008-6.74,4.998-2.701,8.911l25.594,24.781l-5.899,36.178c-0.906,5.549,2.55,8.25,7.72,6.034l31.697-13.595    l31.697,13.595c5.169,2.216,8.434-0.448,7.291-5.957l-7.507-36.255l27.422-25.002C434.589,328.39,433.471,324.501,427.939,323.493    z"></path>
 </g>
-</g></svg><img></span>&nbsp; Moon Phase: <span class="u-text-palette-2-base"><b><i>{{ model_date.astronomy[0].moon_phase }}</i></b>
+</g></svg><img></span>&nbsp; Moon Phase: <span class="u-text-palette-2-base"><b><i>{{
+                model_date.astronomy[0].moon_phase
+              }}</i></b>
           </span>
             </p>
             <p class="u-text u-text-8"><span class="u-icon u-icon-8"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xml:space="preserve" class="u-svg-content" viewBox="0 0 512 512" style="width: 1em; height: 1em;"><g><g><path d="m342.195 276.453h-172.39c-26.927 23.836-43.908 58.654-43.908 97.443 0 71.855 58.249 130.104 130.103 130.104s130.103-58.249 130.103-130.103c0-38.789-16.981-73.607-43.908-97.444z" fill="#edf4fa"></path><path
@@ -164,7 +349,8 @@
                 d="m299.647 159.349c-4.151 0-7.515 3.364-7.515 7.515v10.269c0 4.151 3.364 7.515 7.515 7.515s7.515-3.364 7.515-7.515v-10.269c0-4.151-3.364-7.515-7.515-7.515z"></path><path
                 d="m273.712 187.459c-3.075 0-5.715 1.849-6.878 4.495-.002-.002-.011-.008-.011-.009-.235.476-2.52 4.652-10.264 4.652s-10.028-4.175-10.263-4.652l-.013.006c-1.164-2.643-3.803-4.491-6.877-4.491-5.585-.152-9.368 6.336-6.594 11.12 2.463 5.157 9.856 13.047 23.746 13.047s21.283-7.89 23.746-13.047c.586-1.07.921-2.298.921-3.605.002-4.152-3.363-7.516-7.513-7.516z"></path>
 </g>
-</g></svg><img></span>&nbsp; Total Snow(cm):&nbsp;&nbsp;<span class="u-text-palette-2-base"><b><i>{{ model_date.totalSnow_cm }}</i></b>
+</g></svg><img></span>&nbsp; Total Snow(cm):&nbsp;&nbsp;<span
+                class="u-text-palette-2-base"><b><i>{{ model_date.totalSnow_cm }}</i></b>
           </span>
             </p>
             <div class="u-border-3 u-border-grey-dark-1 u-line u-line-horizontal u-line-1"></div>
@@ -204,18 +390,20 @@
 
 <script>
 import {mapState} from 'vuex'
-
+import userService from "../services/user-service";
+import Navigation from "@/components/Navigation";
 
 export default {
   name: 'Profile',
   data() {
     return {
-      image: "'https://cdn3.f-cdn.com/contestentries/329593/16030908/569a8dbb02b52_thumb900.jpg'",
+      image: "'https://cdn.oggito.com/images/full/2018/7/bulutkapak.jpg'",
       selected: 'Ankara',
       result: "",
       date: "",
       pressure: "",
       humidity: "",
+      windSpeed: "",
       weatherDesc: "",
       weatherCache: "",
       weather3Days: [],
@@ -239,58 +427,73 @@ export default {
       }
     }
   },
-  components: {},
+  components: {Navigation},
 
   computed: {
-    ...mapState('weatherCache')
+    ...mapState('weatherCache'),
   },
   methods: {
-    fetchWeather(e) {
+    handleSubmit(result) {
+      this.weather3Days = []
+      this.weather5Days = []
+      this.showMore = false
+      this.showTable = false
+      let payload = {city_name: result};
+      this.$store
+          .dispatch("getWeatherByCityName", payload)
+          .then(() => {
+            this.weatherCache = this.$store.state.weatherCache
+            this.result = this.weatherCache.request[0].query
+            this.date = this.weatherCache.weather[0].date
+            this.temp_C = this.weatherCache.current_condition[0].temp_C
+            this.windSpeed = this.weatherCache.current_condition[0].windspeedKmph
+            this.weatherDesc = this.weatherCache.current_condition[0].weatherDesc[0].value
+            this.pressure = this.weatherCache.current_condition[0].pressure
+            this.humidity = this.weatherCache.current_condition[0].humidity
+            for (let i = 0; i < 3; i++) {
+              this.weather3Days.push(this.weatherCache.weather[i])
+            }
+            for (let i = 0; i < 5; i++) {
+              this.weather5Days.push(this.weatherCache.weather[i])
+            }
+            this.showTable = true
 
-      if (e.key == "Enter") {
-        let payload = {city_name: this.selected};
-        this.$store
-            .dispatch("getWeatherByCityName", payload)
-            .then(() => {
-              this.weather3Days = []
-              this.weather5Days = []
-              this.showMore = false
-              this.weatherCache = this.$store.state.weatherCache
-              this.result = this.weatherCache.request[0].query
-              this.date = this.weatherCache.weather[0].date
-              this.temp_C = this.weatherCache.current_condition[0].temp_C
-              this.weatherDesc = this.weatherCache.current_condition[0].weatherDesc[0].value
-              this.pressure = this.weatherCache.current_condition[0].pressure
-              this.humidity = this.weatherCache.current_condition[0].humidity
-              for (let i = 0; i < 3; i++) {
-                this.weather3Days.push(this.weatherCache.weather[i])
-              }
-              for (let i = 0; i < 5; i++) {
-                this.weather5Days.push(this.weatherCache.weather[i])
-              }
-              this.showTable = true
-            })
-            .catch((error) => {
-              console.log(error);
+          })
+          .catch((error) => {
+            console.log(error);
 
-              (this.error.status = true),
-                  (this.error.message =
-                      error.response.data ||
-                      error.response.error ||
-                      error.response.detail ||
-                      "Unable to login with given credentials.");
-            });
+            (this.error.status = true),
+                (this.error.message =
+                    error.response.data ||
+                    error.response.error ||
+                    error.response.detail ||
+                    "Unable to login with given credentials.");
+          });
 
-      }
-      console.log("this.weatherCache: ", this.weatherCache)
     },
     clickMethod() {
       this.showMore = !this.showMore
     },
     clickMethod2(e) {
-      console.log(e)
       this.model_date = e
       this.$modal.show('example')
+    },
+    searchCity(input) {
+      if (input.length < 2) {
+        return []
+      }
+      let payload = {city_name: input};
+      return userService
+          .cities(payload)
+          .then((res) => {
+            return res.data.filter(city => {
+              return city.toLowerCase()
+                  .startsWith(input.toLowerCase())
+            })
+          })
+          .catch((err) => {
+            return Promise.reject(err);
+          });
     }
   }
 }
@@ -298,11 +501,11 @@ export default {
 
 
 <style scoped>
-@import '../assets/css/popup-general.css';
+@import '../assets/css/general.css';
 @import '../assets/css/popup.css';
+@import '../assets/css/main_page.css';
 
 * {
-  margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
@@ -320,98 +523,19 @@ body {
 main {
   min-height: 100vh;
   padding: 25px;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75));
-}
-
-.search-box {
-  width: 100%;
-  margin-bottom: 30px;
-}
-
-.search-box .search-bar {
-  display: block;
-  width: 100%;
-  padding: 15px;
-
-  color: #313131;
-  font-size: 20px;
-  appearance: none;
-  border: none;
-  outline: none;
-  background: none;
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 0px 16px 0px 16px;
-  transition: 0.4s;
-}
-
-.search-box .search-bar:focus {
-  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.25);
-  background-color: rgba(255, 255, 255, 0.75);
-  border-radius: 16px 0px 16px 0px;
-}
-
-.location-box .location {
-  color: #FFF;
-  font-size: 32px;
-  font-weight: 500;
-  text-align: center;
-  text-shadow: 1px 3px rgba(0, 0, 0, 0.25);
-}
-
-.location-box .date {
-  color: #FFF;
-  font-size: 20px;
-  font-weight: 300;
-  font-style: italic;
-  text-align: center;
-}
-
-.weather-box {
-  text-align: center;
-  padding-bottom: 50px;
-}
-
-.weather-box .temp {
-  display: inline-block;
-  padding: 10px 25px;
-  color: #FFF;
-  font-size: 102px;
-  font-weight: 900;
-  text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
-  background-color: rgba(255, 255, 255, 0.25);
-  border-radius: 16px;
-  margin: 30px 0px;
-  box-shadow: 3px 6px rgba(0, 0, 0, 0.25);
-}
-.weather-box .humidity-pressure {
-  color: #FFF;
-  font-size: 20px;
-  font-weight: 300;
-  text-align: center;
-}
-
-.weather-box .weather {
-  color: #FFF;
-  font-size: 48px;
-  font-weight: 700;
-  font-style: italic;
-  text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
 }
 
 .w-table {
-  color: #FFF;
+  color: #000000;
   font-size: 20px;
-  font-weight: 300;
-  font-style: italic;
   text-align: center;
+  border: solid;
 }
 
 .show-more-less {
   text-decoration: underline;
-  color: #FFF;
+  color: #000000;
   font-size: 20px;
-  font-weight: 300;
   font-style: italic;
   text-align: center;
   padding-bottom: 150px;
@@ -420,8 +544,8 @@ main {
 .show-more-less .tiptext {
   visibility: hidden;
   width: 120px;
-  background-color: black;
-  color: #fff;
+  background-color: darkgray;
+  color: #FFFFFF;
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
@@ -441,169 +565,3 @@ main {
 
 </style>
 
-<!--<template lang="pug">-->
-<!--div(style="text-align: center;")-->
-<!--  h2 Type some animal name to search-->
-
-<!--  v-autocomplete(:items="items" v-model='item', :get-label='getLabel', :min-len='0' @update-items='update', :component-item='tpl', @item-selected="itemSelected", @item-clicked="itemClicked", :input-attrs="{name: 'input-test', id: 'v-my-autocomplete'}")-->
-<!--  p Selected item:-->
-<!--  pre {{ item }}-->
-
-<!--  hr-->
-<!--  p.left.note-->
-<!--    b Note:&nbsp;-->
-<!--    | The v-autocomplete component does not contain any css. Therefore, you can customize the appearence for any framework by applying style to the generated classes.-->
-<!--    br-->
-<!--    b-->
-<!--      a(href="https://github.com/paliari/v-autocomplete#what-about-appearence", target="_blank") See an example-->
-<!--</template>-->
-<!--&lt;!&ndash;<select :required="true" @change="getWeatherForecast">&ndash;&gt;-->
-<!--&lt;!&ndash;              <option>Choose Province</option>&ndash;&gt;-->
-<!--&lt;!&ndash;              <option v-for="c in cityData.list" :value="c.city_name" :key="c.id">&ndash;&gt;-->
-<!--&lt;!&ndash;                {{ c.city_name }}&ndash;&gt;-->
-<!--&lt;!&ndash;              </option>&ndash;&gt;-->
-<!--&lt;!&ndash;            </select>&ndash;&gt;-->
-<!--<script>-->
-<!--import {mapActions, mapGetters} from "vuex";-->
-<!--import Autocomplete from './Autocomplete.vue'-->
-<!--import tpl from './TplItem.vue'-->
-<!--export default {-->
-<!--  name: 'Profile',-->
-<!--  data() {-->
-<!--    return {-->
-<!--      index: 1,-->
-<!--      selected: 'Ankara',-->
-<!--      itemsApi: [],-->
-<!--      item: {id: 1, city_name: 'Ankara'},-->
-<!--      items: [],-->
-<!--      tpl: tpl-->
-<!--    }-->
-<!--  },-->
-<!--  components: {-->
-<!-- 'v-autocomplete': Autocomplete,-->
-<!--  },-->
-<!--  methods: {-->
-<!--    ...mapActions(["getCityData"]),-->
-
-<!--    getWeatherForecast(event) {-->
-<!--      console.log(event.target.value)-->
-<!--      let payload = {city_name: event.target.value};-->
-<!--      this.$store-->
-<!--          .dispatch("getWeatherByCityName", payload)-->
-<!--          .then(() => {-->
-<!--            this.$router.push({name: "profile"});-->
-<!--          })-->
-<!--          .catch((error) => {-->
-<!--            console.log(error);-->
-
-<!--            (this.error.status = true),-->
-<!--                (this.error.message =-->
-<!--                    error.response.data ||-->
-<!--                    error.response.error ||-->
-<!--                    error.response.detail ||-->
-<!--                    "Unable to login with given credentials.");-->
-<!--          });-->
-<!--    },-->
-<!--    itemSelected (item) {-->
-<!--      console.log('Selected item!', item)-->
-<!--      let payload = {city_name: item.city_name};-->
-<!--      this.$store-->
-<!--          .dispatch("getWeatherByCityName", payload)-->
-<!--          .then(() => {-->
-<!--            this.$router.push({name: "profile"});-->
-<!--          })-->
-<!--          .catch((error) => {-->
-<!--            console.log(error);-->
-
-<!--            (this.error.status = true),-->
-<!--                (this.error.message =-->
-<!--                    error.response.data ||-->
-<!--                    error.response.error ||-->
-<!--                    error.response.detail ||-->
-<!--                    "Unable to login with given credentials.");-->
-<!--          });-->
-<!--    },-->
-<!--    itemClicked (item) {-->
-<!--      console.log('You clicked an item!', item)-->
-<!--    },-->
-<!--    getLabel (item) {-->
-<!--      if (item) {-->
-<!--        return item.city_name-->
-<!--      }-->
-
-<!--      return ''-->
-<!--    },-->
-<!--    update (text) {-->
-<!--      this.items = this.cityData.list.filter((item) => {-->
-<!--        return (new RegExp(text.toLowerCase())).test(item.city_name.toLowerCase())-->
-<!--      })-->
-<!--    }-->
-<!--  },-->
-<!--  created() {-->
-<!--    this.getCityData().catch(() => {-->
-<!--    });-->
-<!--    this.items = this.cityData.list;-->
-<!--    console.log("this.items: ", this.items)-->
-<!--  },-->
-<!--  computed: {-->
-<!--    ...mapGetters(["cityData"]),-->
-<!--  },-->
-<!--};-->
-
-<!--</script>-->
-
-<!--<style src="../assets/css/style.css"></style>-->
-<!--<style lang="stylus">-->
-<!--.v-autocomplete-->
-<!--  .v-autocomplete-input-group-->
-<!--    .v-autocomplete-input-->
-<!--      font-size 1.5em-->
-<!--      padding 10px 15px-->
-<!--      box-shadow none-->
-<!--      border 1px solid #157977-->
-<!--      width calc(100% - 32px)-->
-<!--      outline none-->
-<!--      background-color #eee-->
-<!--    &.v-autocomplete-selected-->
-<!--      .v-autocomplete-input-->
-<!--        color green-->
-<!--        background-color #f2fff2-->
-<!--  .v-autocomplete-list-->
-<!--    width 100%-->
-<!--    text-align left-->
-<!--    border none-->
-<!--    border-top none-->
-<!--    max-height 400px-->
-<!--    overflow-y auto-->
-<!--    border-bottom 1px solid #157977-->
-<!--    .v-autocomplete-list-item-->
-<!--      cursor pointer-->
-<!--      background-color #fff-->
-<!--      padding 10px-->
-<!--      border-bottom 1px solid #157977-->
-<!--      border-left 1px solid #157977-->
-<!--      border-right 1px solid #157977-->
-<!--      &:last-child-->
-<!--        border-bottom none-->
-<!--      &:hover-->
-<!--        background-color #eee-->
-<!--      abbr-->
-<!--        opacity 0.8-->
-<!--        font-size 0.8em-->
-<!--        display block-->
-<!--        font-family sans-serif-->
-
-<!--pre-->
-<!--  text-align left-->
-<!--  white-space pre-wrap-->
-<!--  background-color #eee-->
-<!--  border 1px solid silver-->
-<!--  padding 20px !important-->
-<!--  border-radius 10px-->
-<!--  font-family monospace !important-->
-<!--.left-->
-<!--  text-align left-->
-<!--.note-->
-<!--  border-left 5px solid #ccc-->
-<!--  padding 10px-->
-<!--</style>-->

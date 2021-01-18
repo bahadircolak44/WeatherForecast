@@ -11,4 +11,4 @@ class NoModelSerializer(serializers.Serializer):
 
 
 class WeatherConditionSerializer(NoModelSerializer):
-    city_name = serializers.CharField(required=False, allow_blank=True)
+    city_name = serializers.CharField(required=True, allow_blank=False)

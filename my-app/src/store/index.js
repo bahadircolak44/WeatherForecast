@@ -47,6 +47,7 @@ export default new Vuex.Store({
       state.weatherCache = data
     },
     city(state, city_list){
+      state.city.city_list
       for (let i = 0; i < city_list.length; i++) {
         state.city.city_list.addItem(city_list[i])
       }
@@ -88,9 +89,9 @@ export default new Vuex.Store({
           return Promise.reject(err);
         });
     },
-    getCityData(context) {
+    getCityData(context, payload) {
       return userService
-        .cities()
+        .cities(payload)
         .then((res) => {
           context.commit("city", res.data);
           return Promise.resolve(res.data);

@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
     ports:
-      - "5432:5432"
+      - "5558:5432"
   weather_rest_api:
     build: .
     entrypoint: /rest/docker-entrypoint_last.sh

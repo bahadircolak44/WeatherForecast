@@ -1,13 +1,11 @@
 import traceback
 
 from django.contrib.auth import logout
-from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from authentication.serializers import GenericModelSerializer
+from authentication.serializers import UserRegisterSerializer
 
 
 class RegistrationView(APIView):
@@ -19,9 +17,9 @@ class RegistrationView(APIView):
 
     def post(self, *args, **kwargs):
         try:
-            serializer = GenericModelSerializer(data=self.request.data, model=User, exclude=('id', 'password'))
+            serializer = UserRegisterSerializer(data=self.request.data)
             if serializer.is_valid():
-                User.objects.create_user(**serializer.validated_data)
+                serializer.save()
                 return Response(status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
@@ -43,5 +41,6 @@ class AboutMeView(APIView):
     """
 
     """
+
     def get(self, *args, **kwargs):
         return Response({"username": "test", "email": "bcolak@gmail.com"}, status=status.HTTP_200_OK)

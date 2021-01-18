@@ -19,22 +19,24 @@ class WeatherConditionView(APIView):
     To get weather-forecast of given city
     """
 
-    permission_classes = []
-
     def post(self, *args, **kwargs):
         try:
             serializer = WeatherConditionSerializer(data=self.request.data)
             if serializer.is_valid():
-                r = requests.get(
-                    f"{settings.WORLD_WEATHER_ONLINE_BASE_URL}/?key={settings.WORLD_WEATHER_ONLINE_API_KEY}&"
-                    f"q={serializer.validated_data.get('city_name')}&format={settings.WORLD_WEATHER_ONLINE_FORMAT}")
-                if not r.status_code == status.HTTP_200_OK:
-                    return Response(status=status.HTTP_204_NO_CONTENT)
-                content = json.loads(r.content)
-                print(f"{settings.WORLD_WEATHER_ONLINE_BASE_URL}/?key={settings.WORLD_WEATHER_ONLINE_API_KEY}&"
-                    f"q={serializer.validated_data.get('city_name')}&format={settings.WORLD_WEATHER_ONLINE_FORMAT}")
-                print(content.get('data').get('request')[0].get('query'))
-                return Response(content)
+                # Check if city exists
+                world_city = WorldCities.objects.filter(**serializer.validated_data).exists()
+                if world_city:
+                    # send get request
+                    response = requests.get(
+                        f"{settings.WORLD_WEATHER_ONLINE_BASE_URL}/?key={settings.WORLD_WEATHER_ONLINE_API_KEY}&"
+                        f"q={ serializer.validated_data.get('city_name')}&format={settings.WORLD_WEATHER_ONLINE_FORMAT}")
+                    # Check if valid
+                    if not response.status_code == status.HTTP_200_OK:
+                        return Response(status=status.HTTP_204_NO_CONTENT)
+
+                    content = json.loads(response.content)
+                    return Response(content, status=status.HTTP_200_OK)
+                return Response(data={}, status=status.HTTP_200_OK)
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as ex:
             print(traceback.format_exc())
@@ -45,16 +47,18 @@ class ListWorldCitiesView(APIView):
     """
 
     """
-    permission_classes = []
 
-    def get(self, *args, **kwargs):
+    def post(self, *args, **kwargs):
         try:
-            serializer = GenericModelSerializer(data=self.request.query_params, model=WorldCities,
+            serializer = GenericModelSerializer(data=self.request.data, model=WorldCities,
                                                 fields=('id', 'city_name'))
             if serializer.is_valid():
-                city_list = WorldCities.objects.filter()  # filter has better performance than .all()
-                return Response(GenericModelSerializer(city_list, fields=('id', 'city_name'), many=True).data)
+                city_list = WorldCities.objects.filter(
+                    city_name__contains=serializer.validated_data.get('city_name').capitalize()).values_list(
+                    'city_name', flat=True)
+                return Response(city_list)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except:
+            # For error.log
             print(traceback.format_exc())
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)

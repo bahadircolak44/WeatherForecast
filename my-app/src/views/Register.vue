@@ -27,6 +27,17 @@
             />
           </div>
           <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              placeholder="E-mail"
+              v-model="credentials.email"
+              required
+            />
+          </div>
+          <div class="form-group">
             <label for="password">Password</label>
             <input
               type="password"
@@ -37,22 +48,9 @@
               required
             />
           </div>
-          <div class="form-group">
-            <label for="password2">Password repeat</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password2"
-              placeholder="Password repeat"
-              v-model="credentials.password2"
-              required
-            />
-          </div>
           <button
             type="submit"
-            class="btn btn-primary btn-block"
-            :disabled="!passwordEquality"
-          >
+            class="btn btn-primary btn-block">
             Register
           </button>
         </form>
@@ -72,8 +70,7 @@ export default {
       credentials: {
         username: "",
         email: "",
-        password: "",
-        password2: "",
+        password: ""
       },
       error: {
         status: false,
@@ -97,10 +94,7 @@ export default {
     },
   },
   computed: {
-    passwordEquality() {
-      if (this.credentials.password === this.credentials.password2) return true;
-      else return false;
-    },
+
   },
 };
 </script>

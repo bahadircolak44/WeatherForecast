@@ -17,8 +17,8 @@ class UserService {
         return client.get("auth/me/");
     }
 
-    cities() {
-        return client.get("cities/");
+    cities(payload) {
+        return client.post("cities/", payload);
     }
 
     weather(payload) {
