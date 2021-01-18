@@ -34,3 +34,7 @@ or
 
 -    # RUN DJANGO
     $ python manage.py runserver
+    
+- DEFAULT USER:
+    * username=test
+    * password=test
