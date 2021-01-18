@@ -16,21 +16,21 @@ or
     $ source venv/bin/activate
     
 -    # Windows
-    $ py -m venv env
+    $ py -m venv venv
     $ .\venv\Scripts\activate
     
 -    # Library Installation
     $ pip install -r requirements.txt
-    $ npm cache clear --force
+    $ cd my-app
     $ npm install
     $ npm install i @vue/cli@3.7.0
     $ npm install i bootstrap bootstrap-vue vue-select vuetify vue-js-modal vue-router vuex jquery axios popper.js @trevoreyre/autocomplete-vue
     
-    
 -    # RUN VUE
     $ cd my-app
     $ npm run serve
-
+    
+   - If you have trouble while running vue server, delete my-app/package-lock.json and run npm install again
 
 -    # RUN DJANGO
     $ python manage.py runserver
