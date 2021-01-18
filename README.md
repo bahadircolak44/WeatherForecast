@@ -3,7 +3,10 @@ weather forecast application
 You can run it in two ways:
 -    # Docker
     $ docker-compose up
-
+    
+ If you want to use docker, you should change database settings in settings.py.
+ Use postgresql, command out sqlite.
+    
 or  
 
 -    # MacOS, Linux
@@ -23,12 +26,9 @@ or
     
     
 -    # RUN VUE
-    
     $ cd my-app
     $ npm run serve
 
 
 -    # RUN DJANGO
-    $ python manage.py makemigrations api
-    $ python manage.py migrate
     $ python manage.py runserver
