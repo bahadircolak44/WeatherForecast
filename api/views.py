@@ -41,8 +41,10 @@ class WeatherConditionView(APIView):
                         start = time.time()
                         # This is because forecast_data is textfield. sqlite has no support jsonfield.
                         # On docker we can use json field
-                        content = json.loads(forecast_data.forecast_data.replace("'", '"'))
-
+                        try:
+                            content = json.loads(forecast_data.forecast_data.replace("'", '"'))
+                        except:
+                            content = json.loads(forecast_data.forecast_data)
                         end = time.time()
                         # Compare performance
                         print("FROM DB: ", end - start)
@@ -60,7 +62,8 @@ class WeatherConditionView(APIView):
                         end = time.time()
                         # Update the existing data
                         weather, is_new = WeatherForecast.objects.get_or_create(city_id=world_city.id)
-                        weather.__dict__.update(forecast_data=content)
+                        print(content.decode())
+                        weather.__dict__.update(forecast_data=content.decode())
                         weather.save()
                         content = json.loads(content)
                         # Compare performance

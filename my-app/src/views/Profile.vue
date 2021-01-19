@@ -389,7 +389,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import userService from "../services/user-service";
 import Navigation from "@/components/Navigation";
 
@@ -431,6 +431,12 @@ export default {
 
   computed: {
     ...mapState('weatherCache'),
+    ...mapGetters(['isLoggedIn'])
+  },
+  created() {
+    if (!this.isLoggedIn){
+      this.$router.push({ name: "login" });
+    }
   },
   methods: {
     handleSubmit(result) {
