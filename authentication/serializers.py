@@ -3,6 +3,11 @@ from rest_framework import serializers
 
 
 class GenericModelSerializer(serializers.ModelSerializer):
+    """
+    This serializer is very useful and generic serializer so that you do not have to define multiple serializer for each models.
+    Model, fields, exclude or even extra_fields can be send as a parameter.
+    """
+
     def __init__(self, *args, **kwargs):
         # for re-usability
         self.Meta.fields = None
@@ -27,7 +32,6 @@ class GenericModelSerializer(serializers.ModelSerializer):
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
         fields = ('email', 'password', 'username')
